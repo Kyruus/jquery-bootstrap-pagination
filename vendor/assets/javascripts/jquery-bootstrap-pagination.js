@@ -160,8 +160,13 @@
       };
 
       PaginationView.prototype.clicked = function(event) {
-        var page;
+        var page, parent;
         page = parseInt($(event.target).attr("data-page"));
+        parent = $(event.target).parent();
+        if (parent.hasClass("disabled") || parent.hasClass("active") || page === this.current_page || page > this.total_pages || page < 1) {
+          event.preventDefault();
+          return false;
+        }
         if (this.settings.callback != null) {
           this.settings.callback(event, page);
         }

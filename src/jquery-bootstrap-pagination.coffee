@@ -163,6 +163,13 @@
     # called when a link is clicked in the pagination list:
     clicked: (event) =>
       page = parseInt($(event.target).attr("data-page"))
+
+      # Don't do anything if the clicked link is disabled, already active, or navigates to an out-of-range page
+      parent = $(event.target).parent()
+      if parent.hasClass("disabled") or parent.hasClass("active") or page == @current_page or page > @total_pages or page < 1
+        event.preventDefault()
+        return false
+
       # if there is a callback registered, then call it
       # passing the original event and the page number that was clicked:
       if @settings.callback?
